@@ -1,5 +1,3 @@
 export default function page() {
-  return (
-    <div>Spotify</div>
-  )
+  return <div>Main Content</div>;
 }
