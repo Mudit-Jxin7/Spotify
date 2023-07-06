@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
+import { toast } from "react-hot-toast";
 import { HiHome } from "react-icons/hi";
 import { FaUserAlt } from "react-icons/fa";
 import { BiSearch } from "react-icons/bi";
@@ -29,7 +30,9 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
     router.refresh();
 
     if (error) {
-      console.log(error);
+      toast.error(error.message);
+    } else {
+      toast.success("Logged out");
     }
   };
 
