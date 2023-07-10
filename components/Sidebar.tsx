@@ -1,20 +1,26 @@
 "use client";
-import { usePathname } from "next/navigation"; //access the current pathname of the URL
-import { useMemo } from "react"; //optimize such computations by memoizing the result and reusing it if the dependencies haven't changed since the last render
+
 import { HiHome } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
-import Box from "./Box";
-import SidebarItem from "./SidebarItem";
-import Library from "./Library";
+import { twMerge } from "tailwind-merge";
+import { usePathname } from "next/navigation";
+
 import { Song } from "@/types";
+import usePlayer from "@/hooks/usePlayer";
+
+import SidebarItem from "./SidebarItem";
+import Box from "./Box";
+import Library from "./Library";
+import { useMemo } from "react";
 
 interface SidebarProps {
-  children: React.ReactNode; //React.ReactNode type represents the type of children that a React component can receive.
+  children: React.ReactNode;
   songs: Song[];
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ children, songs }: SidebarProps) => {
+const Sidebar = ({ children, songs }: SidebarProps) => {
   const pathname = usePathname();
+  const player = usePlayer();
 
   const routes = useMemo(
     () => [
@@ -27,15 +33,23 @@ const Sidebar: React.FC<SidebarProps> = ({ children, songs }: SidebarProps) => {
       {
         icon: BiSearch,
         label: "Search",
-        active: pathname === "/search",
         href: "/search",
+        active: pathname === "/search",
       },
     ],
     [pathname]
   );
 
   return (
-    <div className="flex h-full">
+    <div
+      className={twMerge(
+        `
+        flex 
+        h-full
+        `,
+        player.activeId && "h-[calc(100%-80px)]"
+      )}
+    >
       <div
         className="
           hidden 
